@@ -1,0 +1,29 @@
+{
+  "name": "nano-img",
+  "version": "0.1.0",
+  "description": "Installable Gemini image generation CLI with reusable local defaults.",
+  "type": "module",
+  "bin": {
+    "nano-image": "./src/cli.js",
+    "nano-img": "./src/cli.js"
+  },
+  "scripts": {
+    "dev": "node src/cli.js",
+    "nano-img": "node src/cli.js",
+    "test": "node --test",
+    "check": "node --test"
+  },
+  "keywords": [
+    "cli",
+    "gemini",
+    "image-generation",
+    "nano-banana"
+  ],
+  "engines": {
+    "node": ">=20.10.0"
+  },
+  "dependencies": {
+    "@google/genai": "^1.49.0",
+    "sharp": "^0.34.5"
+  }
+}
