@@ -12,6 +12,11 @@ metadata:
 
 Use this skill when the task is specifically about the local `nano-img` or `nano-image` CLI in this repository or its home-directory defaults under `~/.nano-img`.
 
+Package naming note:
+
+- npm package: `nanobana`
+- installed commands: `nano-img`, `nano-image`
+
 Typical triggers:
 
 - "generate an image with nano-img"

@@ -2,6 +2,11 @@
 
 Use this file when the task needs exact CLI invocations.
 
+Package/install note:
+
+- npm package name: `nanobana`
+- installed binaries: `nano-img`, `nano-image`
+
 ## Global Discovery
 
 Preferred:

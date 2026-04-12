@@ -1,5 +1,5 @@
 {
-  "name": "nano-img",
+  "name": "nanobana",
   "version": "0.1.0",
   "description": "Installable Gemini image generation CLI with reusable local defaults.",
   "type": "module",

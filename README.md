@@ -2,6 +2,9 @@
 
 `nano-img` is a reusable Gemini image-generation CLI for Node.js. It is designed for a local "Nano Banana" style workflow where prompts, style guidance, and reference images can live in your home directory and get applied automatically on every run.
 
+The npm package name is `nanobana`.
+The installed command names are `nano-img` and `nano-image`.
+
 It uses the official Gemini JS SDK and does not call Gemini app Gems directly. Instead, it recreates that behavior with:
 
 - `~/.nano-img/assets/` for reusable reference images
@@ -36,6 +39,12 @@ Install dependencies:
 
 ```bash
 npm install
+```
+
+Install from npm after publishing:
+
+```bash
+npm install -g nanobana
 ```
 
 Install the CLI into your shell:
