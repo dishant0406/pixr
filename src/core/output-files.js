@@ -1,3 +1,4 @@
+import { randomUUID } from "node:crypto";
 import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import sharp from "sharp";
@@ -10,7 +11,7 @@ const extensions = {
 };
 
 export async function saveGeneratedFiles({ format, height, outputDir, parts, prefix, prompt, width }) {
-  const stamp = new Date().toISOString().replace(/[:.]/g, "-");
+  const stamp = `${new Date().toISOString().replace(/[:.]/g, "-")}-${randomUUID().slice(0, 8)}`;
   const baseName = `${prefix}-${slugify(prompt).slice(0, 48) || "image"}-${stamp}`;
   const images = [];
   const textParts = [];

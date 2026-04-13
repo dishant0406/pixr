@@ -8,11 +8,17 @@ The installed command is `pixr`.
 ## Features
 
 - installable CLI with `pixr`
+- `gen` alias for fast prompt-based generation
+- `edit` for text-guided image edits with Gemini
+- `vary` for one or more Gemini-based image variations
 - reusable home-directory defaults in `~/.pixr/`
+- named profiles under `~/.pixr/profiles/<name>/`
+- per-profile model and save-directory defaults
 - live Gemini image-model listing
 - interactive model picker
 - saved default model and output directory
-- reference-image discovery from `~/.pixr/assets`
+- command-aware prompt and reference discovery from `~/.pixr/`
+- interactive and flag-driven profile creation
 - width and height resizing
 - output conversion to `png`, `jpg`, or `webp`
 - REPL mode when no prompt is passed
@@ -65,6 +71,16 @@ Save your preferred default model:
 pixr model gemini-3.1-flash-image-preview
 ```
 
+Scaffold your local `~/.pixr` workspace:
+
+```bash
+pixr config --init
+pixr profile init social
+pixr profile init social --model gemini-3.1-flash-image-preview \
+  --save-dir "~/Pictures/pixr/social" --format webp --width 1600 --height 900 \
+  --prefix social --default-profile
+```
+
 Save a default output directory:
 
 ```bash
@@ -75,6 +91,24 @@ Generate an image:
 
 ```bash
 pixr generate "a clean product poster for a white mechanical keyboard"
+```
+
+Use the shorter alias:
+
+```bash
+pixr gen "a clean product poster for a white mechanical keyboard"
+```
+
+Edit an existing image:
+
+```bash
+pixr edit ./hero.png "turn this into a premium skincare ad with softer lighting"
+```
+
+Generate two variations:
+
+```bash
+pixr vary ./hero.png --count 2
 ```
 
 Generate and save into a folder:
@@ -108,8 +142,13 @@ Every command supports help:
 
 ```bash
 pixr --help
+pixr help edit
+pixr help vary
 pixr help generate
 pixr generate --help
+pixr edit --help
+pixr vary --help
+pixr profile --help
 pixr models --help
 pixr model --help
 pixr save-dir --help
@@ -120,11 +159,15 @@ pixr refs --help
 Main commands:
 
 - `pixr generate [options] <prompt>`
+- `pixr gen [options] <prompt>`
+- `pixr edit [options] <input> <prompt>`
+- `pixr vary [options] <input> [prompt]`
 - `pixr models`
 - `pixr model [<name>] [--clear-model]`
+- `pixr profile [list|show|init] [name]`
 - `pixr save-dir [<path>] [--set <path>] [--clear-save-dir]`
 - `pixr refs`
-- `pixr config`
+- `pixr config [--init]`
 
 Examples:
 
@@ -132,6 +175,12 @@ Examples:
 pixr generate --model gemini-2.5-flash-image "a soft editorial portrait"
 pixr generate --ref ./extra.png --no-default-refs "a bottle shot with hard rim light"
 pixr generate -w 1600 "a wide editorial thumbnail with auto height"
+pixr edit ./hero.png --ref ./logo.png "replace the product label with this logo"
+pixr vary ./hero.png --count 3 "keep the same product, explore bolder compositions"
+pixr profile list
+pixr profile show social
+pixr profile init social --model gemini-3.1-flash-image-preview --save-dir ./renders/social
+pixr config --init
 pixr models --json
 pixr refs --json
 pixr config --json
@@ -162,13 +211,32 @@ npm run pixr -- help generate
 
 ```text
 ~/.pixr/
+├── config.json
 ├── INSTRUCTION.md
 ├── STYLE.md
+├── prompts/
+│   ├── generate.md
+│   ├── edit.md
+│   └── vary.md
 ├── assets/
-│   ├── ref-1.png
-│   └── ref-2.jpg
-└── config.json
+│   ├── common/
+│   ├── generate/
+│   ├── edit/
+│   └── vary/
+└── profiles/
+    └── social/
+        ├── INSTRUCTION.md
+        ├── STYLE.md
+        └── assets/
 ```
+
+Profile fallback:
+
+- `--profile <name>` uses `~/.pixr/profiles/<name>/INSTRUCTION.md`, `STYLE.md`, and `assets/` when present
+- profiles can also save their own `model`, `outputDir`, `format`, `width`, `height`, `prefix`, `count`, and `promptFile` in `~/.pixr/config.json`
+- if a profile file is missing, `pixr` falls back to the global `~/.pixr` file or asset folders
+- `assets/common/` and command folders like `assets/edit/` are auto-discovered
+- if more than three default asset images exist, `pixr` uses the latest three by modified time and prints a warning
 
 Legacy local setup is still read when present:
 
@@ -180,14 +248,17 @@ Legacy local setup is still read when present:
 Precedence:
 
 1. CLI flags
-2. environment variables
-3. saved config
-4. auto-discovered home-directory files
+2. selected profile overrides
+3. environment variables
+4. saved config
+5. auto-discovered home-directory files
 
 ## Notes
 
 - `models` only shows image-capable Gemini models.
+- `edit` and `vary` use Gemini's text-and-image editing flow.
 - `--save-to` and `--output` are identical.
+- `pixr profile init <name>` opens an interactive setup flow in a real terminal unless you pass flags or `--no-interactive`.
 - `-w` alone preserves aspect ratio.
 - `-h` alone preserves aspect ratio.
 - `-w` and `-h` together force exact final dimensions.

@@ -25,5 +25,8 @@ export async function runRefsCommand(options) {
   for (const reference of payload.references) {
     console.log(reference.path);
   }
+  for (const warning of payload.warnings) {
+    console.error(`warning: ${warning}`);
+  }
   return payload;
 }

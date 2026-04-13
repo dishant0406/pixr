@@ -1,6 +1,6 @@
 ---
 name: pixr-cli
-description: Drives the local pixr Gemini image CLI for image generation, model selection, saved defaults, reference-image workflows, and output sizing or format conversion. Use when the user wants to generate images with pixr, inspect config or refs, set the default model or save directory, manage ~/.pixr files, or get command-specific help for this CLI.
+description: Drives the local pixr Gemini image CLI for generation, editing, variations, model selection, saved defaults, profile-based defaults, reference-image workflows, and output sizing or format conversion. Use when the user wants to generate or edit images with pixr, inspect config, refs, or profiles, set the default model or save directory, manage ~/.pixr files, or get command-specific help for this CLI.
 metadata:
   author: pixr
   version: 0.1.0
@@ -15,9 +15,14 @@ Use this skill when the task is specifically about the local `pixr` CLI in this 
 Typical triggers:
 
 - "generate an image with pixr"
+- "edit an image with pixr"
+- "create variations with pixr"
 - "set the pixr model"
 - "save images to a default folder"
 - "use the refs from ~/.pixr/assets"
+- "init a pixr profile"
+- "make a profile use a different model or save dir"
+- "show the pixr profile layout"
 - "show what pixr supports"
 - "fix or inspect pixr config"
 
@@ -40,23 +45,32 @@ If you are working inside this repo and do not want to depend on a global link, 
    Use `pixr help` for global help or `pixr <command> --help` for command help.
 2. If the task is generation, inspect saved defaults first when they matter.
    Run `pixr config --json`.
-3. If the task depends on a saved model or output directory, prefer the dedicated commands over editing config by hand:
+3. If the task depends on profile-specific defaults, inspect or scaffold them first:
+   - `pixr profile list`
+   - `pixr profile show <name>`
+   - `pixr profile init <name>`
+   - `pixr config --profile <name> --json`
+4. If the task depends on a saved model or output directory, prefer the dedicated commands over editing config by hand:
    - `pixr model ...`
    - `pixr save-dir ...`
-4. If the task depends on reusable prompts or style, use the home-directory files:
+5. If the task depends on reusable prompts or style, use the home-directory files:
    - `~/.pixr/INSTRUCTION.md`
    - `~/.pixr/STYLE.md`
+   - `~/.pixr/prompts/<command>.md`
    - `~/.nano-image/STYLE.md`
-5. If the task uses default reference images, inspect `~/.pixr/assets` and verify with `pixr refs --json`.
-6. After changing behavior, validate with one concrete CLI command and capture the resulting output path or config state.
+6. If the task uses default reference images, inspect `~/.pixr/assets` or `~/.pixr/profiles/<name>/assets` and verify with `pixr refs --json`.
+   Remember that pixr keeps only the latest three default asset images by modified time.
+7. After changing behavior, validate with one concrete CLI command and capture the resulting output path or config state.
 
-## Generate Images
+## Image Workflows
 
 For generation details and command recipes, read `references/command-reference.md`.
 
 Key rules:
 
-- Use `generate` explicitly unless the user clearly wants the shorthand prompt form.
+- Use `generate` or `gen` for prompt-only creation.
+- Use `edit` for text-guided changes to an existing image.
+- Use `vary` for one or more Gemini-generated variations of an existing image.
 - Respect saved defaults from `~/.pixr/config.json`.
 - If the user passes `--save-to` or `--output`, that overrides the saved default output directory.
 - Width-only or height-only requests preserve aspect ratio during local resize.
@@ -73,6 +87,8 @@ Prefer command-driven config changes:
 - Pick model interactively: `pixr models`
 - Save default output dir: `pixr save-dir --set "<path>"`
 - Clear saved output dir: `pixr save-dir --clear-save-dir`
+- Save profile defaults: `pixr profile init <name> --model ... --save-dir ...`
+- Use interactive profile setup: `pixr profile init <name>`
 
 Avoid editing `~/.pixr/config.json` directly unless the user explicitly asks for a manual file edit.
 
