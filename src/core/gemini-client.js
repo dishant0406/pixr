@@ -1,14 +1,23 @@
 import path from "node:path";
 import { pathToFileURL } from "node:url";
 
+import {
+  API_KEY_ENV,
+  CLIENT_MODULE_ENV,
+  LEGACY_API_KEY_ENV,
+  LEGACY_CLIENT_MODULE_ENV,
+} from "./constants.js";
+
 export async function createGeminiClient(apiKey) {
-  if (process.env.NANO_IMAGE_CLIENT_MODULE) {
-    const modulePath = path.resolve(process.env.NANO_IMAGE_CLIENT_MODULE);
+  const clientModulePath = process.env[CLIENT_MODULE_ENV] ?? process.env[LEGACY_CLIENT_MODULE_ENV];
+
+  if (clientModulePath) {
+    const modulePath = path.resolve(clientModulePath);
     const moduleUrl = pathToFileURL(modulePath).href;
     const loaded = await import(moduleUrl);
     const createClient = loaded.createClient || loaded.default;
     if (typeof createClient !== "function") {
-      throw new Error("NANO_IMAGE_CLIENT_MODULE must export a client factory function.");
+      throw new Error(`${CLIENT_MODULE_ENV} must export a client factory function.`);
     }
     return createClient({ apiKey });
   }
@@ -19,7 +28,7 @@ export async function createGeminiClient(apiKey) {
 
 export async function listImageGenerationModels(apiKey) {
   if (!apiKey) {
-    throw new Error("Set NANO_IMAGE_API_KEY before listing models.");
+    throw new Error(`Set ${API_KEY_ENV} before listing models. ${LEGACY_API_KEY_ENV} also works.`);
   }
 
   const client = await createGeminiClient(apiKey);

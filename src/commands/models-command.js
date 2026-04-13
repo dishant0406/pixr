@@ -1,10 +1,12 @@
-import { loadRuntimeConfig } from "../core/load-runtime-config.js";
+import { API_KEY_ENV, LEGACY_API_KEY_ENV } from "../core/constants.js";
 import { listImageGenerationModels } from "../core/gemini-client.js";
+import { loadRuntimeConfig } from "../core/load-runtime-config.js";
 import { selectOption } from "../core/select-option.js";
 import { writeUserConfig } from "../core/user-config.js";
 
 export async function runModelsCommand(options) {
-  const models = await listImageGenerationModels(process.env.NANO_IMAGE_API_KEY ?? "");
+  const apiKey = process.env[API_KEY_ENV] ?? process.env[LEGACY_API_KEY_ENV] ?? "";
+  const models = await listImageGenerationModels(apiKey);
   const runtimeConfig = await loadRuntimeConfig(options);
 
   if (options.json) {

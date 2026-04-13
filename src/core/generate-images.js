@@ -1,13 +1,13 @@
 import { readFile } from "node:fs/promises";
 
+import { API_KEY_ENV, LEGACY_API_KEY_ENV, MAX_INLINE_BYTES } from "./constants.js";
 import { createGeminiClient } from "./gemini-client.js";
 import { buildImageRequestConfig } from "./image-request-config.js";
-import { MAX_INLINE_BYTES } from "./constants.js";
 import { saveGeneratedFiles } from "./output-files.js";
 
 export async function generateImages(prompt, runtimeConfig) {
   if (!runtimeConfig.apiKey) {
-    throw new Error("Set NANO_IMAGE_API_KEY before generating images.");
+    throw new Error(`Set ${API_KEY_ENV} before generating images. ${LEGACY_API_KEY_ENV} also works.`);
   }
 
   const client = await createGeminiClient(runtimeConfig.apiKey);

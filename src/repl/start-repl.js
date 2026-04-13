@@ -3,6 +3,7 @@ import readline from "node:readline/promises";
 import { runConfigCommand } from "../commands/config-command.js";
 import { runGenerateCommand } from "../commands/generate-command.js";
 import { runRefsCommand } from "../commands/refs-command.js";
+import { APP_NAME } from "../core/constants.js";
 import { getReplHelpText } from "../core/help-text.js";
 
 export async function startRepl(baseOptions) {
@@ -15,11 +16,11 @@ export async function startRepl(baseOptions) {
     refs: [...(baseOptions.refs ?? [])],
   };
 
-  console.log("nano-img REPL");
+  console.log(`${APP_NAME} REPL`);
   console.log("Type /help for commands.");
 
   while (true) {
-    const line = (await rl.question("nano-img> ")).trim();
+    const line = (await rl.question(`${APP_NAME}> `)).trim();
     if (!line) {
       continue;
     }

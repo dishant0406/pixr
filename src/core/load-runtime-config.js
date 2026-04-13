@@ -3,12 +3,18 @@ import os from "node:os";
 import path from "node:path";
 
 import {
+  API_KEY_ENV,
+  APP_NAME,
   CONFIG_DIR,
   DEFAULT_MODEL,
   DEFAULT_OUTPUT_FORMAT,
   IMAGE_EXTENSIONS,
+  LEGACY_API_KEY_ENV,
+  LEGACY_CONFIG_DIR,
+  LEGACY_MODEL_ENV,
   LEGACY_STYLE_DIR,
   MAX_REFERENCE_IMAGES,
+  MODEL_ENV,
   MIME_TYPES,
 } from "./constants.js";
 import { getUserConfigPath, readUserConfig } from "./user-config.js";
@@ -29,10 +35,12 @@ export function buildSystemInstruction(instructionText, styleText) {
 export async function loadRuntimeConfig(options = {}, overrides = {}) {
   const cwd = overrides.cwd ?? process.cwd();
   const homeDir = overrides.homeDir ?? os.homedir();
-  const configDir = path.join(homeDir, ".nano-img");
+  const configDir = await resolveConfigDir(homeDir);
   const warnings = [];
   const refs = [];
   const userConfig = await readUserConfig(homeDir);
+  const apiKey = process.env[API_KEY_ENV] ?? process.env[LEGACY_API_KEY_ENV] ?? "";
+  const modelEnv = process.env[MODEL_ENV] ?? process.env[LEGACY_MODEL_ENV];
 
   if (!options.noDefaultRefs) {
     refs.push(...(await listDefaultReferenceFiles(path.join(configDir, "assets"), warnings)));
@@ -49,23 +57,35 @@ export async function loadRuntimeConfig(options = {}, overrides = {}) {
   const styleText = await readOptionalText(stylePath);
 
   return {
-    apiKey: process.env.NANO_IMAGE_API_KEY ?? "",
+    apiKey,
     configPath: getUserConfigPath(homeDir),
     format: parseOutputFormat(options.format),
-    hasApiKey: Boolean(process.env.NANO_IMAGE_API_KEY),
+    hasApiKey: Boolean(apiKey),
     height: parseDimension(options.height, "height"),
     instructionPath,
-    model: options.model || process.env.NANO_IMAGE_MODEL || userConfig.model || DEFAULT_MODEL,
+    model: options.model || modelEnv || userConfig.model || DEFAULT_MODEL,
     outputDir: resolveOutputDir(cwd, options.output, userConfig.outputDir),
     persistedModel: userConfig.model || null,
     persistedOutputDir: userConfig.outputDir || null,
-    prefix: sanitizePrefix(options.prefix || "nano-img"),
+    prefix: sanitizePrefix(options.prefix || APP_NAME),
     referenceFiles,
     stylePath,
     systemInstruction: buildSystemInstruction(instructionText, styleText),
     width: parseDimension(options.width, "width"),
     warnings,
   };
+}
+
+async function resolveConfigDir(homeDir) {
+  const primary = path.join(homeDir, path.basename(CONFIG_DIR));
+  const legacy = path.join(homeDir, path.basename(LEGACY_CONFIG_DIR));
+  if (await exists(primary)) {
+    return primary;
+  }
+  if (await exists(legacy)) {
+    return legacy;
+  }
+  return primary;
 }
 
 async function listDefaultReferenceFiles(assetsDir, warnings) {
@@ -140,7 +160,7 @@ async function resolveStylePath(styleFile, cwd, homeDir) {
 
 function sanitizePrefix(value) {
   const cleaned = value.replace(/[^a-z0-9-_]+/gi, "-").replace(/^-+|-+$/g, "");
-  return cleaned || "nano-img";
+  return cleaned || APP_NAME;
 }
 
 function parseDimension(value, label) {

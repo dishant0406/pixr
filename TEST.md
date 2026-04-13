@@ -5,7 +5,7 @@
 This CLI keeps network-dependent code behind a small Gemini client wrapper and tests the rest locally:
 
 - config discovery from home-directory files
-- saved default model discovery from `~/.nano-img/config.json`
+- saved default model discovery from `~/.pixr/config.json`
 - instruction/style prompt assembly
 - reference-image detection
 - CLI JSON output
@@ -25,16 +25,16 @@ Validate the installable command locally:
 
 ```bash
 npm link
-nano-img --help
+pixr --help
 ```
 
 Run a real request:
 
 ```bash
-export NANO_IMAGE_API_KEY=your_gemini_key
-nano-img generate "A cinematic product shot of a brass fountain pen"
+export PIXR_API_KEY=your_gemini_key
+pixr generate "A cinematic product shot of a brass fountain pen"
 ```
 
 ## Test hook
 
-`NANO_IMAGE_CLIENT_MODULE` lets the CLI load a fake client for tests so e2e coverage does not need network access.
+`PIXR_CLIENT_MODULE` lets the CLI load a fake client for tests so e2e coverage does not need network access.

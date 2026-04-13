@@ -1,59 +1,53 @@
 ---
-name: nano-img-cli
-description: Drives the local nano-img Gemini image CLI for image generation, model selection, saved defaults, reference-image workflows, and output sizing or format conversion. Use when the user wants to generate images with nano-img or nano-image, inspect config or refs, set the default model or save directory, manage ~/.nano-img files, or get command-specific help for this CLI.
+name: pixr-cli
+description: Drives the local pixr Gemini image CLI for image generation, model selection, saved defaults, reference-image workflows, and output sizing or format conversion. Use when the user wants to generate images with pixr, inspect config or refs, set the default model or save directory, manage ~/.pixr files, or get command-specific help for this CLI.
 metadata:
-  author: nano-cli-img
+  author: pixr
   version: 0.1.0
 ---
 
-# Nano Img CLI
+# Pixr CLI
 
 ## When To Use
 
-Use this skill when the task is specifically about the local `nano-img` or `nano-image` CLI in this repository or its home-directory defaults under `~/.nano-img`.
-
-Package naming note:
-
-- npm package: `nanobana`
-- installed commands: `nano-img`, `nano-image`
+Use this skill when the task is specifically about the local `pixr` CLI in this repository or its home-directory defaults under `~/.pixr`.
 
 Typical triggers:
 
-- "generate an image with nano-img"
-- "set the nano-img model"
+- "generate an image with pixr"
+- "set the pixr model"
 - "save images to a default folder"
-- "use the refs from ~/.nano-img/assets"
-- "show what nano-img supports"
-- "fix or inspect nano-img config"
+- "use the refs from ~/.pixr/assets"
+- "show what pixr supports"
+- "fix or inspect pixr config"
 
 Do not use this skill for general Gemini API design discussions that are not tied to this CLI.
 
 ## Execution Mode
 
-Prefer the installed binaries when available:
+Prefer the installed binary when available:
 
-- `nano-img`
-- `nano-image`
+- `pixr`
 
 If you are working inside this repo and do not want to depend on a global link, use:
 
 - `npm run dev -- <command>`
-- `npm run nano-img -- <command>`
+- `npm run pixr -- <command>`
 
 ## Core Workflow
 
 1. Start by checking the exact command surface instead of assuming flags.
-   Use `nano-img help` for global help or `nano-img <command> --help` for command help.
+   Use `pixr help` for global help or `pixr <command> --help` for command help.
 2. If the task is generation, inspect saved defaults first when they matter.
-   Run `nano-img config --json`.
+   Run `pixr config --json`.
 3. If the task depends on a saved model or output directory, prefer the dedicated commands over editing config by hand:
-   - `nano-img model ...`
-   - `nano-img save-dir ...`
+   - `pixr model ...`
+   - `pixr save-dir ...`
 4. If the task depends on reusable prompts or style, use the home-directory files:
-   - `~/.nano-img/INSTRUCTION.md`
-   - `~/.nano-img/STYLE.md`
+   - `~/.pixr/INSTRUCTION.md`
+   - `~/.pixr/STYLE.md`
    - `~/.nano-image/STYLE.md`
-5. If the task uses default reference images, inspect `~/.nano-img/assets` and verify with `nano-img refs --json`.
+5. If the task uses default reference images, inspect `~/.pixr/assets` and verify with `pixr refs --json`.
 6. After changing behavior, validate with one concrete CLI command and capture the resulting output path or config state.
 
 ## Generate Images
@@ -63,7 +57,7 @@ For generation details and command recipes, read `references/command-reference.m
 Key rules:
 
 - Use `generate` explicitly unless the user clearly wants the shorthand prompt form.
-- Respect saved defaults from `~/.nano-img/config.json`.
+- Respect saved defaults from `~/.pixr/config.json`.
 - If the user passes `--save-to` or `--output`, that overrides the saved default output directory.
 - Width-only or height-only requests preserve aspect ratio during local resize.
 - Width plus height forces the final image to the exact requested dimensions.
@@ -75,12 +69,12 @@ For persistent settings and file layout, read `references/defaults-and-files.md`
 
 Prefer command-driven config changes:
 
-- Save model: `nano-img model <name>`
-- Pick model interactively: `nano-img models`
-- Save default output dir: `nano-img save-dir --set "<path>"`
-- Clear saved output dir: `nano-img save-dir --clear-save-dir`
+- Save model: `pixr model <name>`
+- Pick model interactively: `pixr models`
+- Save default output dir: `pixr save-dir --set "<path>"`
+- Clear saved output dir: `pixr save-dir --clear-save-dir`
 
-Avoid editing `~/.nano-img/config.json` directly unless the user explicitly asks for a manual file edit.
+Avoid editing `~/.pixr/config.json` directly unless the user explicitly asks for a manual file edit.
 
 ## Troubleshooting
 

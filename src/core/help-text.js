@@ -1,46 +1,48 @@
+import { APP_NAME } from "./constants.js";
+
 const HELP = {
-  global: `nano-img
+  global: `${APP_NAME}
 
 Usage:
-  nano-img [options] <prompt>
-  nano-img generate [options] <prompt>
-  nano-img model [<name>] [--clear-model]
-  nano-img models [--json] [--no-interactive]
-  nano-img save-dir [<path>] [--set <path>] [--clear-save-dir]
-  nano-img refs [--json]
-  nano-img config [--json]
-  nano-img help [command]
-  nano-img
+  ${APP_NAME} [options] <prompt>
+  ${APP_NAME} generate [options] <prompt>
+  ${APP_NAME} model [<name>] [--clear-model]
+  ${APP_NAME} models [--json] [--no-interactive]
+  ${APP_NAME} save-dir [<path>] [--set <path>] [--clear-save-dir]
+  ${APP_NAME} refs [--json]
+  ${APP_NAME} config [--json]
+  ${APP_NAME} help [command]
+  ${APP_NAME}
 
 Commands:
   generate       Generate one or more images from a prompt
-  model          Show or save the default model in ~/.nano-img/config.json
+  model          Show or save the default model in ~/.pixr/config.json
   models         Interactive model picker or plain model list
   save-dir       Show or save the default output directory
   refs           Show detected default reference images
   config         Show resolved config and discovered files
   help           Show help for the CLI or a subcommand
 
-Run \`nano-img <command> --help\` for command-specific help.`,
-  config: `nano-img config
+Run \`${APP_NAME} <command> --help\` for command-specific help.`,
+  config: `${APP_NAME} config
 
 Usage:
-  nano-img config [--json] [--help]
+  ${APP_NAME} config [--json] [--help]
 
 Shows the resolved runtime config after applying:
   1. CLI flags
   2. environment variables
-  3. ~/.nano-img/config.json
+  3. ~/.pixr/config.json
   4. auto-discovered home-directory files
 
 Options:
   -j, --json   Print machine-readable JSON
   --help       Show this help`,
-  generate: `nano-img generate
+  generate: `${APP_NAME} generate
 
 Usage:
-  nano-img generate [options] <prompt>
-  nano-img [options] <prompt>
+  ${APP_NAME} generate [options] <prompt>
+  ${APP_NAME} [options] <prompt>
 
 Options:
   -m, --model <name>          Override the Gemini image model
@@ -53,7 +55,7 @@ Options:
   --instruction-file <path>   Override INSTRUCTION.md
   --style-file <path>         Override STYLE.md
   --prefix <name>             Output filename prefix
-  --no-default-refs           Ignore ~/.nano-img/assets
+  --no-default-refs           Ignore ~/.pixr/assets
   -j, --json                  Print machine-readable JSON
   --help                      Show this help
 
@@ -62,58 +64,58 @@ Behavior:
   -h only resizes height and preserves aspect ratio
   -w and -h together force the exact output size
   --save-to / --output overrides the saved default output dir`,
-  help: `nano-img help
+  help: `${APP_NAME} help
 
 Usage:
-  nano-img help
-  nano-img help <command>
+  ${APP_NAME} help
+  ${APP_NAME} help <command>
 
 Examples:
-  nano-img help generate
-  nano-img help models`,
-  model: `nano-img model
+  ${APP_NAME} help generate
+  ${APP_NAME} help models`,
+  model: `${APP_NAME} model
 
 Usage:
-  nano-img model
-  nano-img model <name>
-  nano-img model --clear-model
-  nano-img model --json
-  nano-img model --help
+  ${APP_NAME} model
+  ${APP_NAME} model <name>
+  ${APP_NAME} model --clear-model
+  ${APP_NAME} model --json
+  ${APP_NAME} model --help
 
-Shows, saves, or clears the default model in ~/.nano-img/config.json.`,
-  models: `nano-img models
+Shows, saves, or clears the default model in ~/.pixr/config.json.`,
+  models: `${APP_NAME} models
 
 Usage:
-  nano-img models
-  nano-img models --no-interactive
-  nano-img models --json
-  nano-img models --help
+  ${APP_NAME} models
+  ${APP_NAME} models --no-interactive
+  ${APP_NAME} models --json
+  ${APP_NAME} models --help
 
 Behavior:
   In a real terminal this opens an arrow-key picker.
   Press Enter to save the selected model.
   Press q or Esc to cancel without saving.`,
-  refs: `nano-img refs
+  refs: `${APP_NAME} refs
 
 Usage:
-  nano-img refs [--json] [--help]
+  ${APP_NAME} refs [--json] [--help]
 
-Shows the default reference images detected from ~/.nano-img/assets.
+Shows the default reference images detected from ~/.pixr/assets.
 
 Options:
   -j, --json   Print machine-readable JSON
   --help       Show this help`,
-  "save-dir": `nano-img save-dir
+  "save-dir": `${APP_NAME} save-dir
 
 Usage:
-  nano-img save-dir
-  nano-img save-dir --set <path>
-  nano-img save-dir <path>
-  nano-img save-dir --clear-save-dir
-  nano-img save-dir --json
-  nano-img save-dir --help
+  ${APP_NAME} save-dir
+  ${APP_NAME} save-dir --set <path>
+  ${APP_NAME} save-dir <path>
+  ${APP_NAME} save-dir --clear-save-dir
+  ${APP_NAME} save-dir --json
+  ${APP_NAME} save-dir --help
 
-Shows, saves, or clears the default output directory in ~/.nano-img/config.json.
+Shows, saves, or clears the default output directory in ~/.pixr/config.json.
 Passed --save-to / --output always takes precedence over the saved default.`,
 };
 

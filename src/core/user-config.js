@@ -2,15 +2,23 @@ import { mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 
+import { CONFIG_DIR, LEGACY_CONFIG_DIR } from "./constants.js";
+
 export function getUserConfigPath(homeDir = os.homedir()) {
-  return path.join(homeDir, ".nano-img", "config.json");
+  return path.join(homeDir, path.basename(CONFIG_DIR), "config.json");
+}
+
+function getLegacyUserConfigPath(homeDir = os.homedir()) {
+  return path.join(homeDir, path.basename(LEGACY_CONFIG_DIR), "config.json");
 }
 
 export async function readUserConfig(homeDir = os.homedir()) {
-  const filePath = getUserConfigPath(homeDir);
+  try {
+    return JSON.parse(await readFile(getUserConfigPath(homeDir), "utf8"));
+  } catch {}
 
   try {
-    return JSON.parse(await readFile(filePath, "utf8"));
+    return JSON.parse(await readFile(getLegacyUserConfigPath(homeDir), "utf8"));
   } catch {
     return {};
   }

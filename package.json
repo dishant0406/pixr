@@ -1,15 +1,13 @@
 {
-  "name": "nanobana",
+  "name": "pixr",
   "version": "0.1.0",
-  "description": "Installable Gemini image generation CLI with reusable local defaults.",
+  "description": "Installable Gemini image-generation CLI with reusable local defaults.",
   "type": "module",
-  "bin": {
-    "nano-image": "./src/cli.js",
-    "nano-img": "./src/cli.js"
-  },
+  "bin": "src/cli.js",
+  "license": "ISC",
   "scripts": {
     "dev": "node src/cli.js",
-    "nano-img": "node src/cli.js",
+    "pixr": "node src/cli.js",
     "test": "node --test",
     "check": "node --test"
   },
@@ -17,7 +15,8 @@
     "cli",
     "gemini",
     "image-generation",
-    "nano-banana"
+    "image-editor",
+    "pixr"
   ],
   "engines": {
     "node": ">=20.10.0"
