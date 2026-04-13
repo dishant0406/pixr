@@ -1,9 +1,11 @@
 {
-  "name": "pixr",
+  "name": "pixr-cli",
   "version": "0.1.0",
   "description": "Installable Gemini image-generation CLI with reusable local defaults.",
   "type": "module",
-  "bin": "src/cli.js",
+  "bin": {
+    "pixr": "src/cli.js"
+  },
   "license": "ISC",
   "scripts": {
     "dev": "node src/cli.js",

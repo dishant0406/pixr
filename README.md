@@ -2,7 +2,7 @@
 
 `pixr` is an installable Gemini image CLI for Node.js. Today it is focused on generation workflows with reusable local defaults. The brand is intentionally broader so the tool can grow into a more agentic image editor later.
 
-The npm package name is `pixr`.
+The npm package name is `pixr-cli`.
 The installed command is `pixr`.
 
 ## Features
@@ -35,7 +35,7 @@ Legacy env vars still work:
 Install from npm:
 
 ```bash
-npm install -g pixr
+npm install -g pixr-cli
 ```
 
 Install from this repo:

@@ -2,7 +2,7 @@
 
 ## Identity
 
-- npm package name: `pixr`
+- npm package name: `pixr-cli`
 - installed binary: `pixr`
 
 ## Help
