@@ -77,6 +77,65 @@ Key rules:
 - Width plus height forces the final image to the exact requested dimensions.
 - Format defaults to `png`; `jpg`, `jpeg`, and `webp` are supported through local conversion.
 
+### Generate Workflow (Simple and Direct)
+
+When generating from scratch:
+
+1. Write one clear prompt for the full scene.
+2. Run `pixr generate "<prompt>"` (or `pixr gen "<prompt>"`).
+3. Check the output image.
+4. If changes are needed, do not keep stretching a single prompt forever.
+5. Either:
+   - regenerate with a clearer prompt, or
+   - switch to iterative `pixr edit` passes for controlled refinements.
+
+### Edit Workflow (Layered, Never One-Shot)
+
+For edits, use a Photoshop-style layer mindset.
+
+Mandatory rules:
+
+- Never try to do the whole edit in one prompt.
+- Break the task into the smallest possible edit layers.
+- Run one edit layer at a time.
+- Inspect the resulting image after every layer.
+- Continue from the latest good output image as the next input.
+- If a layer result is off, fix only that layer in the next pass.
+
+Recommended layer order (smallest changes first):
+
+1. Cleanup or artifact fixes.
+2. Subject geometry and proportions.
+3. Main object details.
+4. Background elements.
+5. Lighting and shadows.
+6. Color grading and style polish.
+7. Final upscale/resize/format conversion.
+
+Per-layer loop:
+
+1. Define one micro-goal (single visual change).
+2. Run one `pixr edit` command focused only on that micro-goal.
+3. Review the output image.
+4. Accept and move forward, or retry that same layer with a tighter instruction.
+
+Example iterative sequence:
+
+1. `pixr edit --input in.png --prompt "Remove small background clutter only; keep subject unchanged."`
+2. Check output.
+3. `pixr edit --input step1.png --prompt "Adjust face proportions slightly; keep lighting and colors unchanged."`
+4. Check output.
+5. `pixr edit --input step2.png --prompt "Add warm rim light on subject; do not alter composition."`
+6. Check output and continue.
+
+Prefer precise constraints in edit prompts:
+
+- "only"
+- "keep unchanged"
+- "do not alter composition"
+- "preserve identity"
+- "preserve camera angle"
+
 ## Configure Defaults
 
 For persistent settings and file layout, read `references/defaults-and-files.md`.
